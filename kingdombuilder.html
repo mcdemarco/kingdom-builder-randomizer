@@ -57,7 +57,8 @@ make_setup = function() {
 	if (crossroads) {
 		boards = boards.concat(boardsCrossroads);
 	}
-	if (boards)
+
+	if (boards.length > 0)
 		shuffled_boards = shuffle(boards);
 	else
 		return;
