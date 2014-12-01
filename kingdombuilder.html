@@ -36,6 +36,9 @@ clearAll = function() {
 		var b = document.getElementById("b" + i);
 		b.style.backgroundColor = '';
 	}
+	var ib = document.getElementById("i0");
+		ib.value = '';
+		ib.style.backgroundColor = '';
 }
 
 make_setup = function() {
@@ -82,6 +85,8 @@ make_setup = function() {
 		var b_has_capitol = (capitol && (b.value == "Oracle" || b.value == "Harbor"));
 		if (caves && (b.value == "Tavern"))
 			are_caves = true;
+		if (island && (b.value == "Harbor" || b.value == "Lighthouse"))
+			document.getElementById("i0").value = "Island";
 		
 		if (Math.random() < 0.5) {
 			b.value += " (↷)";
@@ -138,10 +143,9 @@ a:link, a:visited {color: #333;}
   <div style="float:left;padding-bottom:1em;">
 	<p>
 	  MAP: <br />
-	  <input type="text" id="b0" size="25" readonly="readonly"></input><input
-	type="text" id="b1" size="25" readonly="readonly"></input> <br />
-	  <input type="text" id="b2" size="25" readonly="readonly"></input><input
-	type="text" id="b3" size="25" readonly="readonly"></input>
+	  <input type="text" id="b0" size="25" readonly="readonly"></input><input type="text" id="b1" size="25" readonly="readonly"></input> <br />
+	  <input type="text" id="b2" size="25" readonly="readonly"></input><input type="text" id="b3" size="25" readonly="readonly"></input><br/>
+	  <input type="text" id="i0" size="10" readonly="readonly"></input>
 	</p>
 	<p>
 	  GOALS: <br />
