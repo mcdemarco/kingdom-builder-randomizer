@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Kingdom Builder random setup</title>
+<title>Kingdom Builder Randomizer</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 <!--
@@ -12,8 +12,7 @@ Use and distribute freely. CC0. Public domain. No rights reserved. Have fun.
 -->
 
 <script type="text/javascript">
-/* <![CDATA[ */
-var boardsKB = ["Oracle", "Farm", "Oasis", "Tower",
+var boardsBase = ["Oracle", "Farm", "Oasis", "Tower",
 	"Tavern", "Barn", "Harbor", "Paddock"];
 var cardsKB = ["Fishermen", "Miners", "Merchants", "Workers", "Discoverers",
 	"Knights", "Hermits", "Lords", "Citizens", "Farmers"];
@@ -28,44 +27,51 @@ shuffle = function(o){ //v1.0
 };
 
 clearAll = function() {
-    for (var i = 0; i < 4; ++i) {
-        var t = document.getElementById("t" + i);
-        t.value = '';
-        t.style.backgroundColor = '';
-    }
-    for (var i = 0; i < 4; ++i) {
-        var b = document.getElementById("b" + i);
-        b.style.backgroundColor = '';
-    }
+	for (var i = 0; i < 4; ++i) {
+		var t = document.getElementById("t" + i);
+		t.value = '';
+		t.style.backgroundColor = '';
+	}
+	for (var i = 0; i < 4; ++i) {
+		var b = document.getElementById("b" + i);
+		b.style.backgroundColor = '';
+	}
 }
 
 make_setup = function() {
-    clearAll();
-	boards = boardsKB;
-    cards = cardsKB;
-    tasks = taskCards;
-	capitol = document.getElementById("capitol").checked;
+	clearAll();
+	boards = [];
+	cards = cardsKB;
+	tasks = taskCards;
+	base = document.getElementById("base").checked;
 	nomads = document.getElementById("nomads").checked;
 	crossroads = document.getElementById("crossroads").checked;
-    if (nomads) {
-        boards = boards.concat(boardsNomads);
-        cards = cards.concat(cardsKBN);
-    }
-    if (crossroads) {
-        boards = boards.concat(boardsCrossroads);
-    }
-	shuffled_boards = shuffle(boards);
-    crossroadBoardsPicked = 0;
+	capitol = document.getElementById("capitol").checked;
+	if (base) {
+		boards = boards.concat(boardsBase);
+	}
+	if (nomads) {
+		boards = boards.concat(boardsNomads);
+		cards = cards.concat(cardsKBN);
+	}
+	if (crossroads) {
+		boards = boards.concat(boardsCrossroads);
+	}
+	if (boards)
+		shuffled_boards = shuffle(boards);
+	else
+		return;
+
+	crossroadBoardsPicked = 0;
 	for (var i = 0; i < 4; ++i) {
-		//alert("b"+i);
 		var b = document.getElementById("b" + i);
 		b.value = shuffled_boards[i];
-        if (boardsCrossroads.indexOf(b.value) > -1) {
-            crossroadBoardsPicked++;
-            b.style.backgroundColor = '#5DE534';
-        } else if (boardsNomads.indexOf(b.value) > -1) {
-            b.style.backgroundColor = '#33B5E5';
-        }
+		if (boardsCrossroads.indexOf(b.value) > -1) {
+			crossroadBoardsPicked++;
+			b.style.backgroundColor = '#5DE534';
+		} else if (boardsNomads.indexOf(b.value) > -1) {
+			b.style.backgroundColor = '#33B5E5';
+		}
 		var b_has_capitol = (capitol && (b.value == "Oracle" || b.value == "Harbor"));
 		
 		if (Math.random() < 0.5) {
@@ -84,55 +90,78 @@ make_setup = function() {
 		var c = document.getElementById("c" + i);
 		c.value = shuffled_cards[i];
 	}
-    if (crossroadBoardsPicked > 0) {
-        shuffled_tasks = shuffle(tasks);
-        for (var i = 0; i < crossroadBoardsPicked; ++i) {
-            var t = document.getElementById("t" + i);
-            t.value = shuffled_tasks[i];
-            t.style.backgroundColor = '#5DE534';
-        }
-    }
-    // choose starting player
-    var p = document.getElementById("p");
-    var count = parseInt(p.value, 10);
-    if (count > 0) {
-        var pc = document.getElementById("pc");
-        var startingIndex = Math.floor(Math.random() * count) + 1;
-        pc.innerHTML = "Player " + startingIndex + " starts";
-    }
+	if (crossroadBoardsPicked > 0) {
+		shuffled_tasks = shuffle(tasks);
+		for (var i = 0; i < crossroadBoardsPicked; ++i) {
+			var t = document.getElementById("t" + i);
+			t.value = shuffled_tasks[i];
+			t.style.backgroundColor = '#5DE534';
+		}
+	}
+	// choose starting player
+	var p = document.getElementById("p");
+	var count = parseInt(p.value, 10);
+	if (count > 0) {
+		var pc = document.getElementById("pc");
+		var startingIndex = Math.floor(Math.random() * count) + 1;
+		pc.innerHTML = "Player " + startingIndex + " starts";
+	}
 };
-/* ]]> */
 </script>
+<style>
+a:link, a:visited {color: #333;}
+.base {background-color: #E5B533;}
+.nomads {background-color: #33B5E5;}
+.crossroads {background-color: #5DE534;}
+</style>
 </head>
-<body>
-<form action="">
-<p><a href="http://boardgamegeek.com/boardgame/107529">Kingdom Builder</a> random setup:<br />
-MAP: <br />
-<input type="text" id="b0" readonly="readonly"></input><input
+<body style="padding:5%;">
+  <h1>Kingdom Builder Random Setup</h1>
+
+  <div style="float:left;padding-bottom:1em;">
+	<p>
+	  MAP: <br />
+	  <input type="text" id="b0" readonly="readonly"></input><input
 	type="text" id="b1" readonly="readonly"></input> <br />
-<input type="text" id="b2" readonly="readonly"></input><input
+	  <input type="text" id="b2" readonly="readonly"></input><input
 	type="text" id="b3" readonly="readonly"></input>
-<p>
-GOALS: <br />
-<input type="text" id="c0" readonly="readonly"></input> <br />
-<input type="text" id="c1" readonly="readonly"></input> <br />
-<input type="text" id="c2" readonly="readonly"></input>
-<p>
-TASKS: <br />
-<input type="text" id="t0" readonly="readonly"></input> 
-<input type="text" id="t1" readonly="readonly"></input> <br />
-<input type="text" id="t2" readonly="readonly"></input>
-<input type="text" id="t3" readonly="readonly"></input> <br />
-</div>
-<hr />
-<p>Use <a href="http://boardgamegeek.com/boardgameexpansion/109141">Capitol</a>? <input type="checkbox" id="capitol" /><br />
-Use <a href="http://boardgamegeek.com/boardgameexpansion/117793" style="background-color: #33B5E5">Nomads</a>? <input type="checkbox" id="nomads" checked="checked" /><br />
-Use <a href="http://boardgamegeek.com/boardgame/137396" style="background-color: #5DE534">Crossroads</a>? <input type="checkbox" id="crossroads" checked="checked" /><br />
-Players: <input type="text" id="p" value="4"></input> <label id="pc"></label> <br />
-<button onclick="make_setup()" type="button">Make random setup</button>
-<br /><br />
-Original by <a href="http://boardgamegeek.com/user/russ">russ</a>. Updated by <a href="http://gstaff.org">Chris</a>.<br>Use and distribute freely. CC0. Public domain. No rights reserved. Have fun.
-</p>
-</form>
+	</p>
+	<p>
+	  GOALS: <br />
+	  <input type="text" id="c0" readonly="readonly"></input> <br />
+	  <input type="text" id="c1" readonly="readonly"></input> <br />
+	  <input type="text" id="c2" readonly="readonly"></input>
+	</p>
+	<p>
+	  TASKS: <br />
+	  <input type="text" id="t0" readonly="readonly"></input> 
+	  <input type="text" id="t1" readonly="readonly"></input> <br />
+	  <input type="text" id="t2" readonly="readonly"></input>
+	  <input type="text" id="t3" readonly="readonly"></input> <br />
+	</p>
+	<button onclick="make_setup()" type="button">Make random setup</button>
+  </div>
+  
+  <div style="border: 1px dotted gray;border-radius:5px;padding:1em;margin:3em;float:left;">
+	EXPANSIONS: <br/>
+	<input type="checkbox" id="base" checked="checked" /> <a href="http://boardgamegeek.com/boardgameexpansion/117793" class="base">Base</a><br />
+	<input type="checkbox" id="nomads" /> <a href="http://boardgamegeek.com/boardgameexpansion/117793" class="nomads">Nomads</a><br />
+	<input type="checkbox" id="crossroads" /> <a href="http://boardgamegeek.com/boardgame/137396" class="crossroads">Crossroads</a><br />
+	<input type="checkbox" id="capitol" /> <a href="http://boardgamegeek.com/boardgameexpansion/109141">Capitol</a> [<a href="http://boardgamegeek.com/article/12458223#12458223">placement rules</a>]<br />
+	<input type="checkbox" id="caves" /> <a href="http://boardgamegeek.com/boardgameexpansion/132377/kingdom-builder-caves">Caves</a> [<a href="http://boardgamegeek.com/article/10331765#10331765"]>placement rules</a>]<br />
+	<input type="checkbox" id="island" /> <a href="http://boardgamegeek.com/boardgameexpansion/156102/kingdom-builder-island">Island</a> [<a href="https://www.kickstarter.com/projects/1016374822/kingdom-builder-big-box-kickstarter-edition/comments?cursor=5943130#comment-5943129">usage rule</a>]<br />
+	<br />
+	PLAYERS: <input type="text" id="p" value="4" size="2"></input> <label id="pc"></label>
+  </div>
+
+  <div style="clear:both; text-align:right;padding-top:1em;">
+	<cite>
+	  <a href="http://boardgamegeek.com/boardgame/107529">Kingdom Builder</a> by Donald X. Vaccarino. <br/>
+	  <a href="http://boardgamegeek.com/thread/839074/free-javascript-kingdom-builder-setup-randomizer">Original randomizer</a> by <a href="http://boardgamegeek.com/user/russ">russ</a>. 
+	  <a href="http://gstaff.org/kingdombuilder">Updated</a> by <a href="http://gstaff.org">Chris</a>.  
+	  Updated by <a href="http://boardgamegeek.com/user/fiddly_bits">mcd</a>.  <br/>
+	  Use and distribute freely. CC0. Public domain. No rights reserved. Have fun.
+	</cite>
+  </div>
 </body>
 </html>
