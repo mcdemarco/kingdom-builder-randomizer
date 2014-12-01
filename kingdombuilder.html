@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Kingdom Builder random setup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<!--
+Kingdom Builder random setup program.
+Written in 2012 by Russ Williams http://russcon.org.
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+ 
+Use and distribute freely. CC0. Public domain. No rights reserved. Have fun.
+-->
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var boardsKB = ["Oracle", "Farm", "Oasis", "Tower",
+	"Tavern", "Barn", "Harbor", "Paddock"];
+var cardsKB = ["Fishermen", "Miners", "Merchants", "Workers", "Discoverers",
+	"Knights", "Hermits", "Lords", "Citizens", "Farmers"];
+var boardsKBN = ["Oracle", "Farm", "Oasis", "Tower",
+	"Tavern", "Barn", "Harbor", "Paddock",
+	"Quarry", "Caravan", "Village", "Garden"];
+var cardsKBN = ["Fishermen", "Miners", "Merchants", "Workers", "Discoverers",
+	"Knights", "Hermits", "Lords", "Citizens", "Farmers",
+	"Families", "Shepherds", "Ambassadors"];
+
+shuffle = function(o){ //v1.0
+	for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	return o;
+};
+
+make_setup = function() {
+	capitol = document.getElementById("capitol").checked;
+	nomads = document.getElementById("nomads").checked;
+	boards = nomads ? boardsKBN : boardsKB;
+	cards = nomads ? cardsKBN : cardsKB;
+	shuffled_boards = shuffle(boards);
+	for (var i = 0; i < 4; ++i) {
+		//alert("b"+i);
+		var b = document.getElementById("b" + i);
+		b.value = shuffled_boards[i];
+
+		var b_has_capitol = (capitol && (b.value == "Oracle" || b.value == "Harbor"));
+		
+		if (Math.random() < 0.5) {
+			b.value += " (↷)";
+		}
+		if (b_has_capitol) {
+			if (Math.random() < 0.5) {
+				b.value += " (Capitol N)";
+			} else {
+				b.value += " (Capitol S)";
+			}
+		}
+	}
+	shuffled_cards = shuffle(cards);
+	for (var i = 0; i < 3; ++i) {
+		var c = document.getElementById("c" + i);
+		c.value = shuffled_cards[i];
+	}
+};
+/* ]]> */
+</script>
+</head>
+<body>
+<form action="">
+<p><a href="http://boardgamegeek.com/boardgame/107529">Kingdom Builder</a> random setup:<br />
+MAP: <br />
+<input type="text" id="b0" readonly="readonly"></input><input
+	type="text" id="b1" readonly="readonly"></input> <br />
+<input type="text" id="b2" readonly="readonly"></input><input
+	type="text" id="b3" readonly="readonly"></input> <br />
+GOALS: <br />
+<input type="text" id="c0" readonly="readonly"></input> <br />
+<input type="text" id="c1" readonly="readonly"></input> <br />
+<input type="text" id="c2" readonly="readonly"></input>
+</p>
+<hr />
+<p>Use <a href="http://boardgamegeek.com/boardgameexpansion/109141">Capitol</a>? <input type="checkbox" id="capitol" checked="checked" /><br />
+Use <a href="http://boardgamegeek.com/boardgameexpansion/117793">Nomads</a>? <input type="checkbox" id="nomads" checked="checked" /><br />
+<button onclick="make_setup()" type="button">Make random setup</button>
+<br /><br />
+Program by <a href="http://boardgamegeek.com/user/russ">russ</a>. Use and distribute freely. CC0. Public domain. No rights reserved. Have fun.
+</p>
+</form>
+</body>
+</html>
