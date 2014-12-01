@@ -47,6 +47,8 @@ make_setup = function() {
 	nomads = document.getElementById("nomads").checked;
 	crossroads = document.getElementById("crossroads").checked;
 	capitol = document.getElementById("capitol").checked;
+	caves = document.getElementById("caves").checked;
+	island = document.getElementById("island").checked;
 	if (base) {
 		boards = boards.concat(boardsBase);
 	}
@@ -64,16 +66,22 @@ make_setup = function() {
 		return;
 
 	crossroadBoardsPicked = 0;
+	are_caves = false;
 	for (var i = 0; i < 4; ++i) {
 		var b = document.getElementById("b" + i);
 		b.value = shuffled_boards[i];
 		if (boardsCrossroads.indexOf(b.value) > -1) {
 			crossroadBoardsPicked++;
-			b.style.backgroundColor = '#5DE534';
+			b.className = 'crossroads';
 		} else if (boardsNomads.indexOf(b.value) > -1) {
-			b.style.backgroundColor = '#33B5E5';
+			b.className = 'nomads';
+		} else {
+			b.className = 'base';
 		}
+
 		var b_has_capitol = (capitol && (b.value == "Oracle" || b.value == "Harbor"));
+		if (caves && (b.value == "Tavern"))
+			are_caves = true;
 		
 		if (Math.random() < 0.5) {
 			b.value += " (↷)";
@@ -86,6 +94,14 @@ make_setup = function() {
 			}
 		}
 	}
+	if (are_caves) {
+		for (var ac = 0; ac < 4; ++ac) {
+			var bc = document.getElementById("b" + ac);
+			if (bc.value.substring(0,5) != "Oasis")
+				bc.value += " (Cave)";
+		}
+	}
+
 	shuffled_cards = shuffle(cards);
 	for (var i = 0; i < 3; ++i) {
 		var c = document.getElementById("c" + i);
@@ -122,10 +138,10 @@ a:link, a:visited {color: #333;}
   <div style="float:left;padding-bottom:1em;">
 	<p>
 	  MAP: <br />
-	  <input type="text" id="b0" readonly="readonly"></input><input
-	type="text" id="b1" readonly="readonly"></input> <br />
-	  <input type="text" id="b2" readonly="readonly"></input><input
-	type="text" id="b3" readonly="readonly"></input>
+	  <input type="text" id="b0" size="25" readonly="readonly"></input><input
+	type="text" id="b1" size="25" readonly="readonly"></input> <br />
+	  <input type="text" id="b2" size="25" readonly="readonly"></input><input
+	type="text" id="b3" size="25" readonly="readonly"></input>
 	</p>
 	<p>
 	  GOALS: <br />
