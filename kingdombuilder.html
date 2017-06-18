@@ -84,7 +84,7 @@ clearAll = function() {
 make_setup = function() {
 	clearAll();
 	boards = [];
-	goals = [];
+	goals = contents.goals.base;
 	tasks = contents.tasks.crossroads;
 	expansions = [];
 	minis = {};
@@ -108,7 +108,7 @@ make_setup = function() {
 		boards = boards.concat(contents.boards[expansions[n]]);
 		if (extraRules.hasCastles[expansions[n]])
 			castleBoards += 4;
-		if (contents.goals[expansions[n]])
+		if (contents.goals[expansions[n]] && expansions[n] != "base")
 			goals = goals.concat(contents.goals[expansions[n]]);
 	}
 
